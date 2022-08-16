@@ -1,0 +1,20 @@
+{% if(Var.data) %}
+<script language="javascript">
+    function delConfirm() {
+        return confirm('Удалить запись?');
+    }
+</script>
+
+<div>
+   <h1>{{ Var.data.title }}</h1>
+   <div>{{ Var.data.content }}</div>
+   <div style="float:right;text-align:right;">
+      {% if(Var.data.userId == Session.userId || group(1)) %}
+         [<a href="/api/blog/delRecord/{{ Var.data.uid }}" onClick="javascript: return delConfirm();" class="supsmall" title="удалить" alt="удалить">удалить</a>]
+         [<a href="/blogcontrol/uid/{{ Var.data.uid }}" class="supsmall" title="редактировать" alt="редактировать">редактировать</a>]
+      {% endif %}
+      <span class="supsmall">!date от <a href="/users/userId={{ Var.data.userId }}">{{ Var.data.login }}</a></span>
+   </div>
+</div>
+{% else %}
+{% endif %}

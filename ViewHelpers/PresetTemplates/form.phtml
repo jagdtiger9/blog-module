@@ -1,0 +1,42 @@
+{% include("blog_editor_js") %}
+
+{% if(Flash.msgData) %}
+<h3>{{ Var.msgData }}</h3>
+{% endif %}
+{% if(Var.msg) %}
+<h3>{{ Var.msg }}</h3>
+{% endif %}
+<form name="blogForm" action="{{ Var.form.action }}" method="POST">
+   <input type="hidden" name="uid" action="{{ Get.uid }}">
+   <input type="hidden" name="an" value="{{ Get.an }}">
+   <b>Заголовок:</b><br>
+   <input type="text" name="title" value="{{ Var.form.fields.title.value }}">
+
+   <b>Раздел:</b>
+   <select name="category">
+      <option value="0">не задана</option>
+      {% foreach(Var.form.fields.category.options as key => val) %}
+      <option value="{{ val.uid }}" {% if(val.uid==Var.form.fields.category.value) %}selected{% endif %}>{{ val.title }}</option>
+      {% endforeach %}
+   </select>
+   <a href="javascript:toggleEditor('blog_content');">[<b>Сменить режим редактирования</b>]</a><br>
+
+   <textarea id="blog_content" name="content" cols="120" rows="25">{{ Var.form.fields.content.value }}</textarea>
+
+   <p>
+   <h4>Видимость</h4>
+   <b>кому:</b>
+   <select name="visibility">
+      <option value="off" {% if(Var.form.fields.visibility.value=='off') %}selected{% endif %}>Только мне</option>
+      <option value="all" {% if(Var.form.fields.visibility.value=='all') %}selected{% endif %}>Всем</option>
+   </select>
+   <b>где:</b>
+   <select name="printPlace">
+      <option value="private" {% if(Var.form.fields.printPlace.value=='private') %}selected{% endif %}>Личный блог</option>
+      <option value="category" {% if(Var.form.fields.printPlace.value=='category') %}selected{% endif %}>Личный блог, разделы</option>
+      <option value="general" {% if(Var.form.fields.printPlace.value=='general') %}selected{% endif %}>Личный блог, разделы, заглавная</option>
+   </select>
+   </p>
+
+   <input type="submit" value="Сохранить">
+</form>

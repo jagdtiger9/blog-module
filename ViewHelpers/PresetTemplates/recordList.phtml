@@ -1,0 +1,29 @@
+<script language="javascript">
+    function delConfirm() {
+        return confirm('Удалить запись?');
+    }
+</script>
+{% if(Flash.msg) %}
+   <h3>{{ Flash.msg }}</h3>
+{% endif %}
+
+{% set Glob.pageTotal = Var.total  %}
+{% foreach(Var.data as key => val) %}
+<div style="margin: 0 0 15 0; float:left; width:100%;">
+   <div style="margin: 0 0 5 0;">
+      <a href="/blogrecord/uid/{{ val.uid }}"><b>{{ val.title }}</b></a>
+      {% if(val.userId == Session.userId || group(1)) %}
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      [<a href="/api/blog/delRecord/{{ val.uid }}" onClick="javascript: return delConfirm();" class="supsmall" title="удалить" alt="удалить">удалить</a>]
+      [<a href="/blogcontrol/uid/{{ val.uid }}" class="supsmall" title="редактировать" alt="редактировать">редактировать</a>]
+      {% endif %}
+   </div>
+   <div>{{ val.announce }}</div>
+
+   <div style="float:right;text-align:right;">
+      <span class="detail"><a href="/blogrecord/uid/{{ val.uid }}">далее</a></span>
+      &nbsp;&nbsp;&nbsp;
+      <span class="supsmall">{{ date('dd.mm.y H:i', val.dateCreate) }} от <a href="/users/userId/{{ val.userId }}">{{ val.login }}</a></span>
+   </div>
+</div>
+{% endforeach %}
