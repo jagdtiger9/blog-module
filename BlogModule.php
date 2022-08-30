@@ -21,8 +21,8 @@ class BlogModule extends AbstractModule
         return 'Блоги';
     }
 
-    public function getIconPath(): string
+    public function isVisible(): bool
     {
-        return realpath($this->modulePath . '/' . AbstractModule::MODULE_ICON);
+        return false;
     }
 }

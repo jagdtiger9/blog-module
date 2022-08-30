@@ -1,4 +1,4 @@
-<script language="javascript" type="text/javascript" src="<?= MODULES_PUBLIC_DIR ?>/ppm/fileManager/tinymce/tiny_mce/tiny_mce.js"></script>
+<script language="javascript" type="text/javascript" src="/fileManager/tinymce/tiny_mce/tiny_mce.js"></script>
 <script language="javascript" type="text/javascript">
     function myFileBrowser (field_name, url, type, win) {
         //alert("Field_Name: " + field_name + "\nURL: " + url + "\nType: " + type + "\nWin: " + win); // debug/testing
@@ -8,7 +8,7 @@
         These lines of code extract the necessary parameters and add them back to the filebrowser URL again. */
 
         //var cmsURL = window.location.toString();    // script URL - use an absolute path!
-        var cmsURL = "<?= MODULES_PUBLIC_DIR ?>/ppm/fileManager/";    // script URL - use an absolute path!
+        var cmsURL = "/fileManager/";    // script URL - use an absolute path!
 
         if (cmsURL.indexOf("?") < 0) {
             //add the type as the only query parameter
