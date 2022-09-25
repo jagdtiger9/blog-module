@@ -4,15 +4,15 @@
 # --- `name` varchar(255) NOT NULL default '' COMMENT 'Псевдоним для навигации, урлов',
 # --- UNIQUE KEY `name` (`name`)
 $sql = "CREATE TABLE IF NOT EXISTS `blog__records` (
-  `uid` int(11) unsigned NOT NULL auto_increment COMMENT 'Идентификатор',
-  `categoryId` int(11) unsigned NOT NULL COMMENT 'Идентификатор категории',
+  `uid` int unsigned NOT NULL auto_increment COMMENT 'Идентификатор',
+  `categoryId` int unsigned NOT NULL COMMENT 'Идентификатор категории',
 
   `redirectLink` varchar(255) NOT NULL default '' COMMENT 'Редирект при клике на запись в списке',
   `subscrStatus` tinyint(1) not null default 0 COMMENT 'Признак: запись отправлена по рассылке или нет',
 
   `title` varchar(255) NOT NULL default '' COMMENT 'Название записи',
   `content`	text NOT NULL,
-  `userId` int(11) NOT NULL default '0' COMMENT 'Идентификатор пользователя',
+  `userId` int NOT NULL default '0' COMMENT 'Идентификатор пользователя',
   `login` varchar(255) NOT NULL default '' COMMENT 'Логин пользователя, на случай его удаления',
   `dateCreate`	integer NOT NULL default '0',
   `dateModify` integer NOT NULL default '0',
@@ -33,7 +33,7 @@ $sql = "CREATE TABLE IF NOT EXISTS `blog__records` (
 
 # Таблица категорий блогов
 $sql = "CREATE TABLE IF NOT EXISTS `blog__category` (
-  `uid` int(11) unsigned NOT NULL auto_increment COMMENT 'Идентификатор',
+  `uid` int unsigned NOT NULL auto_increment COMMENT 'Идентификатор',
   `name` char(40) NOT NULL default '' COMMENT 'Символьный ключ для редакторов',
   `title` varchar(255) NOT NULL default '' COMMENT 'Тазвание категории',
   `type` enum('novice','advance','admin') default 'novice',
