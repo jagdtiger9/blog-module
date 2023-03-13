@@ -2,17 +2,22 @@
 
 namespace Aljerom\Blog\ViewHelpers;
 
-use MagicPro\Tools\Stringer;
-use MagicPro\View\ViewHelper\AbstractViewHelper;
 use Aljerom\Blog\Models\Category;
 use Aljerom\Blog\Models\Record;
-use sessauth\Services\CurrentUser;
+use MagicPro\Contracts\User\SessionUserInterface;
+use MagicPro\Tools\Stringer;
+use MagicPro\View\ViewHelper\AbstractViewHelper;
 
 /**
  * Одна или список записей блога.
  */
 class BlogRecord extends AbstractViewHelper
 {
+    public function __construct(
+        private SessionUserInterface $user,
+    ) {
+    }
+
     /**
      * Список параметров, которые принимает ViewHelper с указанием соответствующих дефолтных значений
      * @return array
@@ -63,14 +68,11 @@ class BlogRecord extends AbstractViewHelper
      */
     public function getData()
     {
-        $user = CurrentUser::get();
-
-        $result = [];
         $record = new Record();
         if ($this->params['uid']) {
             $total = 1;
             if (false !== $result = $record->find($this->params['uid'])) {
-                if (!$record->visibility && $record->userId != $user->uid && !$user->isAdmin()) {
+                if (!$record->visibility && $record->userId !== $this->user->uid() && !$this->user->isAdmin()) {
                     $result = [];
                     $total = 0;
                 }
@@ -87,7 +89,7 @@ class BlogRecord extends AbstractViewHelper
                 $query->where('printPlace', $this->params['printPlace']);
             }
 
-            if ($this->params['hidden'] && ($user->isAdmin() || $this->params['user'] == $user->uid)) {
+            if ($this->params['hidden'] && ($this->user->isAdmin() || $this->params['user'] === $this->user->uid())) {
                 //
             } else {
                 $query->where('visibility', 'all');

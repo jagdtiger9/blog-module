@@ -2,17 +2,17 @@
 
 namespace Aljerom\Blog\Controllers;
 
+use Aljerom\Blog\Models\Record;
+use Aljerom\Blog\Services\safeinput\safeinput;
+use App\Application\Exception\Runtime\E401NotAuthorized;
 use Exception;
+use MagicPro\Application\Controller;
+use MagicPro\Contracts\User\SessionUserInterface;
+use MagicPro\Database\Exception\DbException;
 use MagicPro\Http\Api\ErrorResponse;
 use MagicPro\Http\Api\SuccessResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use MagicPro\Application\Controller;
-use MagicPro\Database\Exception\DbException;
-use App\Application\Exception\Runtime\E401NotAuthorized;
-use Aljerom\Blog\Models\Record;
-use Aljerom\Blog\Services\safeinput\safeinput;
-use sessauth\Services\CurrentUser;
 
 class MainAdmin extends Controller
 {
@@ -28,11 +28,11 @@ class MainAdmin extends Controller
         $content,
         $visibility,
         $printPlace,
-        $category
+        $category,
+        SessionUserInterface $user,
     ): ResponseInterface {
         try {
-            $user = CurrentUser::get();
-            if (!$user->uid) {
+            if (!$user->uid()) {
                 throw new E401NotAuthorized('Доступ запрещен');
             }
 
@@ -63,7 +63,7 @@ class MainAdmin extends Controller
             $record->category = (int)$category;
             $record->title = strip_tags($title);
             $record->ip = \app('request')->Server('REMOTE_ADDR');
-            $record->setUser($user);
+            $record->setUser($user->uid(), $user->login());
 
             preg_match("|<iframe\s[^>]+></iframe>|ms", $content, $iframeRes);
             $content = str_replace($iframeRes[0], '[googleframe]', $content);
@@ -87,11 +87,13 @@ class MainAdmin extends Controller
         return $this->setApiResponse($request, $apiResponse->withRedirect($back));
     }
 
-    public function actionDelRecord(ServerRequestInterface $request, $uid): ResponseInterface
-    {
+    public function actionDelRecord(
+        ServerRequestInterface $request,
+        $uid,
+        SessionUserInterface $user,
+    ): ResponseInterface {
         try {
-            $user = CurrentUser::get();
-            if (!$user->uid) {
+            if (!$user->uid()) {
                 throw new E401NotAuthorized('Доступ запрещен');
             }
 

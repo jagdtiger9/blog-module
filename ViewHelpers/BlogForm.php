@@ -2,16 +2,21 @@
 
 namespace Aljerom\Blog\ViewHelpers;
 
-use MagicPro\View\ViewHelper\AbstractViewHelper;
 use Aljerom\Blog\Models\Category;
 use Aljerom\Blog\Models\Record;
-use sessauth\Services\CurrentUser;
+use MagicPro\Contracts\User\SessionUserInterface;
+use MagicPro\View\ViewHelper\AbstractViewHelper;
 
 /**
  * Форма добавления записей в блог
  */
 class BlogForm extends AbstractViewHelper
 {
+    public function __construct(
+        private SessionUserInterface $user,
+    ) {
+    }
+
     /**
      * Список параметров, которые принимает ViewHelper с указанием соответствующих дефолтных значений
      * @return array
@@ -34,11 +39,9 @@ class BlogForm extends AbstractViewHelper
     {
         $msg = '';
         if ($this->params['uid']) {
-            $user = CurrentUser::get();
-
             if (null === $record = Record::find($this->params['uid'])) {
                 $record = new Record();
-            } elseif ($record->userId != \app('session')->get('userid') && !$user->isAdmin()) {
+            } elseif ($record->userId !== \app('session')->get('userid') && !$this->user->isAdmin()) {
                 $msg = $msg ? : 'Что-то пошло не так';
                 $record = new Record();
             }

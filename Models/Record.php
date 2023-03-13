@@ -3,7 +3,6 @@
 namespace Aljerom\Blog\Models;
 
 use MagicPro\Database\Model\Model;
-use sessauth\Domain\Models\User;
 
 class Record extends Model
 {
@@ -59,11 +58,11 @@ class Record extends Model
         return $this;
     }
 
-    public function setUser(User $user)
+    public function setUser(int $userId, string $login)
     {
         if (!$this->userId) {
-            $this->userId = $user->uid;
-            $this->login = $user->login;
+            $this->userId = $userId;
+            $this->login = $login;
         }
 
         return $this;
