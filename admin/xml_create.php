@@ -29,7 +29,7 @@ $sql = "CREATE TABLE IF NOT EXISTS `blog__records` (
   `viewCount` integer NOT NULL default '0' COMMENT '',
   PRIMARY KEY `uid` (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-\dumpsite\Models\Dump::createTable('blog__records', $sql);
+\common\Application\Service\Dump::createTable('blog__records', $sql);
 
 # Таблица категорий блогов
 $sql = "CREATE TABLE IF NOT EXISTS `blog__category` (
@@ -44,4 +44,4 @@ $sql = "CREATE TABLE IF NOT EXISTS `blog__category` (
   PRIMARY KEY `uid` (`uid`),
   UNIQUE `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-\dumpsite\Models\Dump::createTable('blog__category', $sql);
+\common\Application\Service\Dump::createTable('blog__category', $sql);
