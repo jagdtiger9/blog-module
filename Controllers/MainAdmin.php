@@ -77,7 +77,7 @@ class MainAdmin extends Controller
                 throw new DbException('Ошибка сохранения записи');
             }
 
-            $back = $request->Post('an') ? _url('', $request->Post('an'), ['uid' => $record->uid]) : true;
+            $back = $request->getParsedBody()['an'] ?? '' ? _url('', $request->getParsedBody()['an'], ['uid' => $record->uid]) : true;
             $apiResponse = new SuccessResponse('Запись успешно сохранена');
         } catch (Exception $e) {
             $apiResponse = ErrorResponse::fromException($e);

@@ -12,7 +12,7 @@ return [
         'controller' => [MainAdmin::class, 'add'],
         'params' => [
             'uid' => ['value' => 0, 'filter' => FILTER_VALIDATE_INT, 'comment' => 'ID редактируемой записи'],
-            'title' => ['value' => '', 'filter' => FILTER_SANITIZE_STRING, 'comment' => 'Заголовок записи'],
+            'title' => ['value' => '', 'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS, 'comment' => 'Заголовок записи'],
             'content' => ['value' => '', 'filter' => FILTER_DEFAULT, 'comment' => 'Содержимое записи'],
             'visibility' => ['value' => 'off', 'filter' => ['all', 'off'], 'comment' => 'Видимость'],
             'printPlace' => ['value' => 'general', 'filter' => ['general', 'category', 'private'], 'comment' => 'Где выводить'],

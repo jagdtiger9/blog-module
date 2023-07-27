@@ -58,7 +58,7 @@ class BlogRecord extends AbstractViewHelper
             'category' => [
                 'value' => '',
                 'comment' => 'Список выводимых категорий',
-                'filter' => FILTER_SANITIZE_STRING
+                'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS
             ],
         ];
     }
